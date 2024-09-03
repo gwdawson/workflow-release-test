@@ -1,4 +1,4 @@
-name: Build and Release
+name: Release New Version
 
 on:
   workflow_dispatch:
@@ -13,34 +13,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: checkout repository
         uses: actions/checkout@v3
 
-      - name: Install Dependencies
+      - name: install dependencies
         run: yarn install
 
-      - name: Build Project
+      - name: build application
         run: yarn build
 
-      # - name: Create Release
-      #   id: create_release
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   uses: actions/create-release@v1
-      #   with:
-      #     tag_name: ${{ github.event.inputs.version }}
-      #     release_name: "Release ${{ github.event.inputs.version }}"
-      #     draft: false
-      #     prerelease: false
-
-      - name: Create Release
+      - name: create release
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.event.inputs.version }}
-          release_name: Release ${{ github.event.inputs.version }}
+          release_name: ${{ github.event.inputs.version }}
           body: |
             Changes in this Release
             - First Change
@@ -48,7 +37,7 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Upload Build to Release
+      - name: upload release artifacts
         uses: actions/upload-artifact@v3
         with:
           name: build-artifact
