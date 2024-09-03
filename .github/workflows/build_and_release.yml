@@ -22,6 +22,26 @@ jobs:
       - name: build application
         run: yarn build
 
+      - name: Get Previous Tag
+        id: get_previous_tag
+        run: echo "::set-output name=tag::$(git describe --tags --abbrev=0 HEAD^)"
+
+      - name: Generate Release Notes
+        id: generate_release_notes
+        run: |
+          PREVIOUS_TAG=${{ steps.get_previous_tag.outputs.tag }}
+          NEW_TAG=${{ github.event.inputs.version }}
+
+          # Generate the release notes based on commit messages
+          RELEASE_NOTES=$(git log --pretty=format:"- %s" $PREVIOUS_TAG..HEAD)
+
+          # If no commits, set a default message
+          if [ -z "$RELEASE_NOTES" ]; then
+            RELEASE_NOTES="No significant changes."
+          fi
+
+          echo "::set-output name=notes::$RELEASE_NOTES"
+
       - name: create release
         id: create_release
         uses: actions/create-release@v1
@@ -30,10 +50,11 @@ jobs:
         with:
           tag_name: ${{ github.event.inputs.version }}
           release_name: ${{ github.event.inputs.version }}
-          body: |
-            Changes in this Release
-            - First Change
-            - Second Change
+          body: ${{ steps.generate_release_notes.outputs.notes }}
+          # body: |
+          #   Changes in this Release
+          #   - First Change
+          #   - Second Change
           draft: false
           prerelease: false
 
