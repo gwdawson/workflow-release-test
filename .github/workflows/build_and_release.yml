@@ -30,9 +30,11 @@ jobs:
           release_name: "Release ${{ github.event.inputs.version }}"
           draft: false
           prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload Build to Release
         uses: actions/upload-artifact@v3
         with:
           name: build-artifact
           path: build/
+g
