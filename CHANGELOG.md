@@ -12,6 +12,13 @@ Fixed      - for any bug fixes.
 Security   - in case of vulnerabilities.
 -->
 
+## [v9.0.0] - 2024-09-01
+
+### Changed
+
+- update action versions
+- disabled auto changelog
+
 ## [v8.0.0] - 2024-09-01
 
 ### Changed
