@@ -1,4 +1,4 @@
-name: Release New Version
+name: Release
 
 on:
   workflow_dispatch:
@@ -22,25 +22,24 @@ jobs:
       - name: build application
         run: yarn build
 
-      - name: Get Previous Tag
-        id: get_previous_tag
-        run: echo "::set-output name=tag::$(git describe --tags --abbrev=0 HEAD^)"
-
-      - name: Generate Release Notes
-        id: generate_release_notes
+      - name: Extract Release Notes from CHANGELOG.md
+        id: extract_changelog
         run: |
-          PREVIOUS_TAG=${{ steps.get_previous_tag.outputs.tag }}
-          NEW_TAG=${{ github.event.inputs.version }}
+          VERSION=${{ github.event.inputs.version }}
 
-          # Generate the release notes based on commit messages
-          RELEASE_NOTES=$(git log --pretty=format:"- %s" $PREVIOUS_TAG..HEAD)
+          # Extract changelog entry between the given version and the next version or end of file
+          awk "/## \\[${VERSION}\\]/,/^## \\[/" CHANGELOG.md | sed '$d' > release_notes.txt
 
-          # If no commits, set a default message
-          if [ -z "$RELEASE_NOTES" ]; then
-            RELEASE_NOTES="No significant changes."
+          # Check if the release notes are empty or not found
+          if [ ! -s release_notes.txt ]; then
+            echo "No release notes available for $VERSION." > release_notes.txt
           fi
 
-          echo "::set-output name=notes::$RELEASE_NOTES"
+          # Display the extracted release notes
+          cat release_notes.txt
+
+          # Set the extracted release notes as an output
+          echo "::set-output name=notes::$(cat release_notes.txt)"
 
       - name: create release
         id: create_release
@@ -50,11 +49,7 @@ jobs:
         with:
           tag_name: ${{ github.event.inputs.version }}
           release_name: ${{ github.event.inputs.version }}
-          body: ${{ steps.generate_release_notes.outputs.notes }}
-          # body: |
-          #   Changes in this Release
-          #   - First Change
-          #   - Second Change
+          body: ${{ steps.extract_changelog.outputs.notes }}
           draft: false
           prerelease: false
 
