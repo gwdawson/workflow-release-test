@@ -22,24 +22,18 @@ jobs:
       - name: build application
         run: yarn build
 
-      # - name: extract changelog
-      #   id: extract_changelog
-      #   run: |
-      #     VERSION=${{ github.event.inputs.version }}
+      - name: extract changelog
+        id: extract_changelog
+        run: |
+          VERSION=${{ github.event.inputs.version }}
+          sed -n "/## \[${VERSION}\]/,/## \[v/p" CHANGELOG.md | sed '1d;$d' > release_notes.txt
 
-      #     # Extract changelog entry between the given version and the next version or end of file
-      #     sed -n "/## \[${VERSION}\]/,/## \[v/p" CHANGELOG.md | sed '1d;$d' > release_notes.txt
+          if [ ! -s release_notes.txt ]; then
+            echo "No release notes available for $VERSION." > release_notes.txt
+          fi
 
-      #     # Check if the release notes are empty or not found
-      #     if [ ! -s release_notes.txt ]; then
-      #       echo "No release notes available for $VERSION." > release_notes.txt
-      #     fi
-
-      #     # Display the extracted release notes
-      #     cat release_notes.txt
-
-      #     # Set the extracted release notes as an output
-      #     echo "::set-output name=notes::$(cat release_notes.txt)"
+          cat release_notes.txt
+          echo "::set-output name=notes::$(cat release_notes.txt)"
 
       - name: create release
         id: create_release
@@ -49,7 +43,8 @@ jobs:
         with:
           tag_name: ${{ github.event.inputs.version }}
           release_name: ${{ github.event.inputs.version }}
-          body: "hello, world!"
+          body_path: release_notes.txt
+          # body: "hello, world!"
           # body: ${{ steps.extract_changelog.outputs.notes }}
           draft: false
           prerelease: false
