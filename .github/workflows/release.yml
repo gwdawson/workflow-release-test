@@ -33,7 +33,7 @@ jobs:
             echo "No release notes available for $VERSION." > release_notes.txt
           fi
 
-          notes=$(cat release_notes.txt | sed 's/%/%25/g' | sed 's/\\n/%0A/g' | sed 's/\r/%0D/g')
+          notes=$(cat release_notes.txt | sed 's/%/%25/g' | sed 's/\\n/%0A/g' | sed 's/\r/%0D/g' | sed 's/#/%23/g')
           echo "notes=$notes" >> $GITHUB_OUTPUT
 
       - name: create release
