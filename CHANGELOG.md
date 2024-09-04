@@ -12,6 +12,12 @@ Fixed      - for any bug fixes.
 Security   - in case of vulnerabilities.
 -->
 
+## [v8.0.0] - 2024-09-01
+
+### Changed
+
+- final fix, remove warn?
+
 ## [v7.0.0] - 2024-09-01
 
 ### Changed
