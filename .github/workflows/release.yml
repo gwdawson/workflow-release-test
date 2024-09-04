@@ -1,18 +1,29 @@
 name: Release
 
 on:
-  workflow_dispatch:
-    inputs:
-      version:
-        description: "Enter the version tag (e.g., v1.0.0)"
-        required: true
-        type: string
+  push:
+    branches:
+      - main
+  # workflow_dispatch:
+  #   inputs:
+  #     version:
+  #       description: "Enter the version tag (e.g., v1.0.0)"
+  #       required: true
+  #       type: string
 
 jobs:
   release:
     runs-on: ubuntu-latest
-
     steps:
+      - name: version check
+        uses: EndBug/version-check@v2
+        with:
+          diff-search: true
+
+      - name: idk what to name this
+        if: steps.version-check.outputs.changed == 'false'
+        run: exit 1
+
       - name: checkout repository
         uses: actions/checkout@v4
 
@@ -30,7 +41,6 @@ jobs:
           if [ ! -s release_notes.txt ]; then
             echo "No release notes available for $VERSION." > release_notes.txt
           fi
-
       - name: create release
         uses: actions/create-release@v1
         env:
