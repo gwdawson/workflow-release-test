@@ -23,7 +23,7 @@ jobs:
         run: yarn build
 
       - name: extract changelog
-        id: changelog
+        id: extract_changelog
         run: |
           VERSION=${{ github.event.inputs.version }}
 
@@ -49,7 +49,7 @@ jobs:
         with:
           tag_name: ${{ github.event.inputs.version }}
           release_name: ${{ github.event.inputs.version }}
-          body: ${{ steps.changelog.outputs.notes }}
+          body: ${{ steps.extract_changelog.outputs.notes }}
           draft: false
           prerelease: false
 

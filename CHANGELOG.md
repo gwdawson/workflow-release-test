@@ -12,6 +12,12 @@ Fixed      - for any bug fixes.
 Security   - in case of vulnerabilities.
 -->
 
+## [v7.0.0] - 2024-09-01
+
+### Changed
+
+- fix auto changelog
+
 ## [v6.0.0] - 2024-09-01
 
 ### Changed
