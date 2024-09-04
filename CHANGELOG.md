@@ -10,141 +10,104 @@ Deprecated - for soon-to-be removed features.
 Removed    - for now removed features.
 Fixed      - for any bug fixes.
 Security   - in case of vulnerabilities.
+
+✨ Added      - for new features.
+⚙️ Changed    - for changes in existing functionality.
+⏳ Deprecated - for soon-to-be removed features.
+❌ Removed    - for now removed features.
+🐛 Fixed      - for any bug fixes.
+🔒 Security   - in case of vulnerabilities.
 -->
-
-## [v13.0.0] - 2024-09-01
-
-### Changed
-
-- change the workflow
-
-## [v12.0.0] - 2024-09-01
-
-### Added
-
-- Added support for OAuth 2.0 for user authentication.
-- New admin dashboard with analytics for better insights.
-- Added API endpoints for managing user profiles.
-- Implemented lazy loading for images to improve page load times.
-
-### Changed
-
-- Updated UI to a new design system for more consistent styling.
-- Database schema changes to optimize query performance.
-- Upgraded React from v17 to v18.
-- Refactored backend routing for better code maintainability.
-
-### Deprecated
-
-- Deprecated `GET /api/v1/user-details`, use `GET /api/v2/user` instead.
-
-### Removed
-
-- Removed support for Internet Explorer 11.
-- Old authentication endpoints `/auth/login`, `/auth/register` removed in favor of new OAuth 2.0 flow.
-
-### Fixed
-
-- Fixed bug with file upload in Safari where progress was not displayed correctly.
-- Fixed caching issue in the service worker that caused incorrect data rendering.
-- Res
-
-### Security
-
-- Update dependency X which implemented a vulnerability
-
-## [v11.0.0] - 2024-09-01
-
-### Changed
-
-- testing more things
-
-## [v10.0.0] - 2024-09-01
-
-### Changed
-
-- upload artifact test
-
-## [v9.0.0] - 2024-09-01
-
-### Changed
-
-- update action versions
-- disabled auto changelog
-
-## [v8.0.0] - 2024-09-01
-
-### Changed
-
-- final fix, remove warn?
-
-## [v7.0.0] - 2024-09-01
-
-### Changed
-
-- fix auto changelog
-
-## [v6.0.0] - 2024-09-01
-
-### Changed
-
-- Update the way we extract the changelog, this should fix auto-changelog
-
-## [v5.0.0] - 2024-09-01
-
-### Changed
-
-- Updated the build and release workflow to include changelog
-
-## [v4.0.0] - 2024-09-01
-
-### Added
-
-- Nothing, this is just a test
 
 ## [v3.0.0] - 2024-09-01
 
-### Added
+- **✨ Added:** Added support for OAuth 2.0 for user authentication.
+- **✨ Added:** New admin dashboard with analytics for better insights.
+- **✨ Added:** Added API endpoints for managing user profiles.
+- **✨ Added:** Implemented lazy loading for images to improve page load times.
 
-- Nothing, this is just a test
+- **⚙️ Changed:** Updated UI to a new design system for more consistent styling.
+- **⚙️ Changed:** Database schema changes to optimize query performance.
+- **⚙️ Changed:** Upgraded React from v17 to v18.
+- **⚙️ Changed:** Refactored backend routing for better code maintainability.
+
+- **⏳ Deprecated:** Deprecated `GET /api/v1/user-details`, use `GET /api/v2/user` instead.
+
+- **❌ Removed:** Removed support for Internet Explorer 11.
+- **❌ Removed:** Old authentication endpoints `/auth/login`, `/auth/register` removed in favor of new OAuth 2.0 flow.
+
+- **🐛 Fixed:** Fixed bug with file upload in Safari where progress was not displayed correctly.
+- **🐛 Fixed:** Fixed caching issue in the service worker that caused incorrect data rendering.
+- **🐛 Fixed:** Res
+
+- **🔒 Security:** Update dependency X which implemented a vulnerability
 
 ## [v2.0.0] - 2024-09-01
 
 ### Added
 
-- Nothing, this is just a test
+- ✨ Added support for OAuth 2.0 for user authentication.
+- ✨ New admin dashboard with analytics for better insights.
+- ✨ Added API endpoints for managing user profiles.
+- ✨ Implemented lazy loading for images to improve page load times.
+
+### Changed
+
+- ⚙️ Updated UI to a new design system for more consistent styling.
+- ⚙️ Database schema changes to optimize query performance.
+- ⚙️ Upgraded React from v17 to v18.
+- ⚙️ Refactored backend routing for better code maintainability.
+
+### Deprecated
+
+- ⏳ Deprecated `GET /api/v1/user-details`, use `GET /api/v2/user` instead.
+
+### Removed
+
+- ❌ Removed support for Internet Explorer 11.
+- ❌ Old authentication endpoints `/auth/login`, `/auth/register` removed in favor of new OAuth 2.0 flow.
+
+### Fixed
+
+- 🐛 Fixed bug with file upload in Safari where progress was not displayed correctly.
+- 🐛 Fixed caching issue in the service worker that caused incorrect data rendering.
+- 🐛 Res
+
+### Security
+
+- 🔒 Update dependency X which implemented a vulnerability
 
 ## [v1.0.0] - 2024-09-01
 
-### Added
+### ✨ Added
 
 - Added support for OAuth 2.0 for user authentication.
 - New admin dashboard with analytics for better insights.
 - Added API endpoints for managing user profiles.
 - Implemented lazy loading for images to improve page load times.
 
-### Changed
+### ⚙️ Changed
 
 - Updated UI to a new design system for more consistent styling.
 - Database schema changes to optimize query performance.
 - Upgraded React from v17 to v18.
 - Refactored backend routing for better code maintainability.
 
-### Deprecated
+### ⏳ Deprecated
 
 - Deprecated `GET /api/v1/user-details`, use `GET /api/v2/user` instead.
 
-### Removed
+### ❌ Removed
 
 - Removed support for Internet Explorer 11.
 - Old authentication endpoints `/auth/login`, `/auth/register` removed in favor of new OAuth 2.0 flow.
 
-### Fixed
+### 🐛 Fixed
 
 - Fixed bug with file upload in Safari where progress was not displayed correctly.
 - Fixed caching issue in the service worker that caused incorrect data rendering.
 - Res
 
-### Security
+### 🔒 Security
 
 - Update dependency X which implemented a vulnerability

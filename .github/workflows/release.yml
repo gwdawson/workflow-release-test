@@ -23,7 +23,6 @@ jobs:
         run: yarn build
 
       - name: extract changelog
-        # id: extract_changelog
         run: |
           VERSION=${{ github.event.inputs.version }}
           sed -n "/## \[${VERSION}\]/,/## \[v/p" CHANGELOG.md | sed '1d;$d' > release_notes.txt
@@ -32,11 +31,7 @@ jobs:
             echo "No release notes available for $VERSION." > release_notes.txt
           fi
 
-          # cat release_notes.txt
-          # echo "::set-output name=notes::$(cat release_notes.txt)"
-
       - name: create release
-        # id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
