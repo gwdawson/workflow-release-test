@@ -4,12 +4,6 @@ on:
   push:
     branches:
       - main
-  # workflow_dispatch:
-  #   inputs:
-  #     version:
-  #       description: "Enter the version tag (e.g., v1.0.0)"
-  #       required: true
-  #       type: string
 
 jobs:
   release:
@@ -37,7 +31,7 @@ jobs:
       - name: extract changelog
         run: |
           VERSION=${{ steps.version-check.outputs.version }}
-          sed -n "/## \[${VERSION}\]/,/## \[v/p" CHANGELOG.md | sed '1d;$d' > release_notes.txt
+          sed -n "/## \[v${VERSION}\]/,/## \[v/p" CHANGELOG.md | sed '1d;$d' > release_notes.txt
 
           if [ ! -s release_notes.txt ]; then
             echo "No release notes available for $VERSION." > release_notes.txt
