@@ -27,19 +27,13 @@ jobs:
         run: |
           VERSION=${{ github.event.inputs.version }}
 
-          # Extract changelog entry between the given version and the next version or end of file
           sed -n "/## \[${VERSION}\]/,/## \[v/p" CHANGELOG.md | sed '1d;$d' > release_notes.txt
 
-          # Check if the release notes are empty or not found
           if [ ! -s release_notes.txt ]; then
             echo "No release notes available for $VERSION." > release_notes.txt
           fi
 
-          # Display the extracted release notes
-          cat release_notes.txt
-
-          # Set the extracted release notes as an output
-          echo "::set-output name=notes::$(cat release_notes.txt)"
+          echo "notes=$(cat release_notes.txt)" >> $GITHUB_ENV
 
       - name: create release
         id: create_release
