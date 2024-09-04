@@ -12,6 +12,12 @@ Fixed      - for any bug fixes.
 Security   - in case of vulnerabilities.
 -->
 
+## [v6.0.0] - 2024-09-01
+
+### Changed
+
+- Update the way we extract the changelog, this should fix auto-changelog
+
 ## [v5.0.0] - 2024-09-01
 
 ### Changed
