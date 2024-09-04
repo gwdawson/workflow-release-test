@@ -17,6 +17,7 @@ jobs:
     steps:
       - name: version check
         uses: EndBug/version-check@v2
+        id: version-check
         with:
           diff-search: true
 
