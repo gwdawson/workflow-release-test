@@ -19,6 +19,7 @@ jobs:
         uses: EndBug/version-check@v2
         id: version-check
         with:
+          package: package.json
           diff-search: true
 
       - name: idk what to name this
@@ -36,7 +37,7 @@ jobs:
 
       - name: extract changelog
         run: |
-          VERSION=${{ github.event.inputs.version }}
+          VERSION=${{ steps.version-check.outputs.version }}
           sed -n "/## \[${VERSION}\]/,/## \[v/p" CHANGELOG.md | sed '1d;$d' > release_notes.txt
 
           if [ ! -s release_notes.txt ]; then
@@ -47,6 +48,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.event.inputs.version }}
-          release_name: ${{ github.event.inputs.version }}
+          tag_name: v${{ steps.version-check.outputs.version }}
+          release_name: v${{ steps.version-check.outputs.version }}
           body_path: release_notes.txt
