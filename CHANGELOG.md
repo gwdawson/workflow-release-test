@@ -16,6 +16,12 @@ Security   - in case of vulnerabilities.
 
 ### Changed
 
+- upload artifact test
+
+## [v9.0.0] - 2024-09-01
+
+### Changed
+
 - update action versions
 - disabled auto changelog
 

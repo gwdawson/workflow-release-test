@@ -54,8 +54,8 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: upload release artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-artifact
-          path: build/
+      # - name: upload release artifacts
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: build-artifact
+      #     path: build/
