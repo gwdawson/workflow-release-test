@@ -1,0 +1,38 @@
+name: workflows
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  deploy-to-vps:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: TEST
+        run: echo "Deploying release to VPS"
+
+      # CREATED BY CHAT GPT - test this.
+      # - name: Checkout code
+      #   uses: actions/checkout@v4
+
+      # - name: Install SSH client
+      #   run: sudo apt-get install -y openssh-client
+
+      # - name: Set up SSH key
+      #   run: |
+      #     mkdir -p ~/.ssh
+      #     echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+      #     chmod 600 ~/.ssh/id_rsa
+      #     ssh-keyscan -H "000.00.000.000" >> ~/.ssh/known_hosts
+
+      # - name: Compress release files
+      #   run: tar -czf release.tar.gz .
+
+      # - name: SCP to VPS
+      #   run: scp release.tar.gz root@000.00.000.000:/var/www/domain/
+      #   env:
+      #     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      # - name: Cleanup
+      #   run: rm release.tar.gz
