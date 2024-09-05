@@ -12,6 +12,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 🔒 Security   - for any vulnerabilities.
 -->
 
+## [v20.0.0] - 2024-09-05
+
+### Added
+
+- ✨ Absolutely nothing.
+
+### Fixed
+
+- 🐛 Fixed bug with file upload in Safari where progress was not displayed correctly.
+- 🐛 Fixed caching issue in the service worker that caused incorrect data rendering.
+- 🐛 Res
+
 ## [v19.0.0] - 2024-09-05
 
 ### Added
