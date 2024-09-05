@@ -1,12 +1,15 @@
-name: release workflow
+name: workflows
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
     branches:
       - "**"
 
 jobs:
-  release:
+  test:
     runs-on: ubuntu-latest
 
     steps:
