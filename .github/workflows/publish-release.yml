@@ -6,8 +6,12 @@ on:
       - main
 
 jobs:
-  main:
+  pre-release:
     runs-on: ubuntu-latest
+
+    outputs:
+      changed: ${{ steps.version-check.outputs.changed }}
+      version: ${{ steps.version-check.outputs.version }}
 
     steps:
       - name: Fetch codebase
@@ -19,26 +23,37 @@ jobs:
         with:
           diff-search: true
 
-      - name: Exit
-        if: steps.version-check.outputs.changed == 'false'
-        run: exit 78
+  main:
+    runs-on: ubuntu-latest
+    needs: pre-release
+    if: needs.pre-release.outputs.changed == 'true'
+
+    steps:
+      - name: Fetch codebase
+        uses: actions/checkout@v4
+
+      # - name: Check version
+      #   id: version-check
+      #   uses: EndBug/version-check@v2
+      #   with:
+      #     diff-search: true
 
       - name: Install dependencies
-        if: steps.version-check.outputs.changed == 'true'
+        # if: steps.version-check.outputs.changed == 'true'
         run: yarn install
 
       - name: Build application
-        if: steps.version-check.outputs.changed == 'true'
+        # if: steps.version-check.outputs.changed == 'true'
         run: yarn build
 
       - name: Run tests
-        if: steps.version-check.outputs.changed == 'true'
+        # if: steps.version-check.outputs.changed == 'true'
         run: echo "TODO - Add tests"
 
       - name: Extract release notes
-        if: steps.version-check.outputs.changed == 'true'
+        # if: steps.version-check.outputs.changed == 'true'
         run: |
-          VERSION=${{ steps.version-check.outputs.version }}
+          VERSION=${{ needs.pre-release.outputs.version }}
           sed -n "/## \[v${VERSION}\]/,/## \[v/p" CHANGELOG.md | sed '1d;$d' > release_notes.txt
 
           if [ ! -s release_notes.txt ]; then
@@ -46,11 +61,11 @@ jobs:
           fi
 
       - name: Publish release
-        if: steps.version-check.outputs.changed == 'true'
+        # if: steps.version-check.outputs.changed == 'true'
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ steps.version-check.outputs.version }}
-          release_name: v${{ steps.version-check.outputs.version }}
+          tag_name: v${{ needs.pre-release.outputs.version }}
+          release_name: v${{ needs.pre-release.outputs.version }}
           body_path: release_notes.txt
