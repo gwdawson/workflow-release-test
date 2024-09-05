@@ -19,6 +19,10 @@ jobs:
         with:
           diff-search: true
 
+      - name: Exit
+        if: steps.version-check.outputs.changed == 'false'
+        run: exit 98
+
       - name: Install dependencies
         if: steps.version-check.outputs.changed == 'true'
         run: yarn install
