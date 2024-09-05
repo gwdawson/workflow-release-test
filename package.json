@@ -8,9 +8,9 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "test:frontend": "echo \"Error: no frontend test specified\" && exit 1",
-    "test:backend": "echo \"Error: no backend test specified\" && exit 1"
+    "test": "echo \"No test specified\"",
+    "test:frontend": "echo \"No frontend test specified\"",
+    "test:backend": "echo \"No backend test specified\""
   },
   "dependencies": {
     "react": "^18.3.1",
