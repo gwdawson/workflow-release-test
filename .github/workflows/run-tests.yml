@@ -1,0 +1,20 @@
+name: release workflow
+
+on:
+  pull_request:
+    branches:
+      - "**"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Fetch codebase
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run tests
+        run: echo "TODO - Add tests"
