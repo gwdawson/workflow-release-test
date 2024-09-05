@@ -1,4 +1,4 @@
-name: Release
+name: release workflow
 
 on:
   push:
@@ -17,18 +17,14 @@ jobs:
         id: version-check
         with:
           diff-search: true
-
-      - name: idk what to name this
-        if: steps.version-check.outputs.changed == 'false'
-        run: exit 1
-
       - name: install dependencies
+        if: steps.version-check.outputs.changed == 'true'
         run: yarn install
-
       - name: build application
+        if: steps.version-check.outputs.changed == 'true'
         run: yarn build
-
       - name: extract changelog
+        if: steps.version-check.outputs.changed == 'true'
         run: |
           VERSION=${{ steps.version-check.outputs.version }}
           sed -n "/## \[v${VERSION}\]/,/## \[v/p" CHANGELOG.md | sed '1d;$d' > release_notes.txt
@@ -37,6 +33,7 @@ jobs:
             echo "No release notes available for $VERSION." > release_notes.txt
           fi
       - name: create release
+        if: steps.version-check.outputs.changed == 'true'
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
