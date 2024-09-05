@@ -21,7 +21,7 @@ jobs:
 
       - name: Exit
         if: steps.version-check.outputs.changed == 'false'
-        run: exit 98
+        run: exit 78
 
       - name: Install dependencies
         if: steps.version-check.outputs.changed == 'true'
