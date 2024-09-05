@@ -34,7 +34,7 @@ jobs:
       - name: Extract release notes
         if: steps.version-check.outputs.changed == 'true'
         run: |
-          VERSION=${{ needs.version-check.outputs.version }}
+          VERSION=${{ steps.version-check.outputs.version }}
           sed -n "/## \[v${VERSION}\]/,/## \[v/p" CHANGELOG.md | sed '1d;$d' > release_notes.txt
 
           if [ ! -s release_notes.txt ]; then
@@ -47,6 +47,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ needs.version-check.outputs.version }}
-          release_name: v${{ needs.version-check.outputs.version }}
+          tag_name: v${{ steps.version-check.outputs.version }}
+          release_name: v${{ steps.version-check.outputs.version }}
           body_path: release_notes.txt
