@@ -1,11 +1,10 @@
-name: workflows
+name: deploy-to-vps
 
 on:
   release:
-    types: [published]
 
 jobs:
-  deploy-to-vps:
+  main:
     runs-on: ubuntu-latest
 
     steps:

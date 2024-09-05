@@ -1,15 +1,11 @@
-name: workflows
+name: run-tests
 
 on:
   push:
-    branches:
-      - main
   pull_request:
-    branches:
-      - "**"
 
 jobs:
-  run-tests:
+  main:
     runs-on: ubuntu-latest
 
     steps:
