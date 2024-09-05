@@ -1,4 +1,4 @@
-name: release workflow
+name: workflows
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  release:
+  publish-release:
     runs-on: ubuntu-latest
 
     steps:
