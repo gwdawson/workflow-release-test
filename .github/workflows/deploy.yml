@@ -2,11 +2,10 @@ name: workflows
 
 on:
   release:
-    types:
-      - published
+    types: [published]
 
 jobs:
-  main:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
