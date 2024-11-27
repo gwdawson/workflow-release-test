@@ -10,30 +10,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Fetch codebase
+      - name: fetch codebase
         uses: actions/checkout@v4
 
-      - name: Check version
+      - name: check version
         id: version-check
         uses: EndBug/version-check@v2
         with:
           diff-search: true
 
-      - name: Install dependencies
+      - name: install dependencies
         if: steps.version-check.outputs.changed == 'true'
         run: yarn install
 
-      - name: Build application
+      - name: build application
         if: steps.version-check.outputs.changed == 'true'
         run: yarn build
 
-      - name: Extract release notes
+      - name: extract release notes
         if: steps.version-check.outputs.changed == 'true'
         run: |
           VERSION=${{ steps.version-check.outputs.version }}
           sed -n "/## \[v${VERSION}\]/,/## \[v/p" CHANGELOG.md | sed '1d;$d' > release_notes.txt || echo "No release notes available v$VERSION" > release_notes.txt
 
-      - name: Publish release
+      - name: publish release
         if: steps.version-check.outputs.changed == 'true'
         uses: actions/create-release@v1
         env:
