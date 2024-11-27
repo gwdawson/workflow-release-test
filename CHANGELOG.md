@@ -16,6 +16,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- ✨ everything? im almost done with this!
+
+## [v26.0.0] - 2024-09-04
+
+### Added
+
 - ✨ ...
 
 ## [v25.0.0] - 2024-09-04
