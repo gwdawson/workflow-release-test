@@ -38,7 +38,7 @@ jobs:
           VERSION=${{ needs.pre-release.outputs.version }}
           sed -n "/## \[v${VERSION}\]/,/## \[v/p" CHANGELOG.md | sed '1d;$d' > release_notes.txt
           if [ ! -s release_notes.txt ]; then
-            echo "No release notes available for v$VERSION." > release_notes.txt
+            echo "No release notes available for v$VERSION" > release_notes.txt
           fi
       - name: Publish release
         uses: actions/create-release@v1
