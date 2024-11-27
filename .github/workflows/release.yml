@@ -42,7 +42,3 @@ jobs:
           tag_name: v${{ steps.version-check.outputs.version }}
           release_name: v${{ steps.version-check.outputs.version }}
           body_path: release_notes.txt
-
-      - name: No release required
-        if: steps.version-check.outputs.changed != 'true'
-        run: echo "No version bump detected. Skipping release."
