@@ -20,11 +20,8 @@ jobs:
           diff-search: true
 
       - name: Exit if no version bump
-        run: |
-          if [ "${{ steps.version-check.outputs.changed }}" != "true" ]; then
-            echo "No version bump detected. Exiting gracefully."
-            exit 0
-          fi
+        if: steps.version-check.outputs.changed == 'true'
+        run: exit 0
 
       - name: Install dependencies
         run: yarn install
