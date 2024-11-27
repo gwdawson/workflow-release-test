@@ -1,7 +1,9 @@
-name: deploy-to-vps
+name: workflows
 
 on:
   release:
+    types:
+      - published
 
 jobs:
   main:
