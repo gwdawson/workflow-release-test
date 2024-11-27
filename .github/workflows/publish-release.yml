@@ -19,25 +19,22 @@ jobs:
         with:
           diff-search: true
 
-      - name: Exit if no version bump
-        if: steps.version-check.outputs.changed == 'true'
-        run: exit 0
-
       - name: Install dependencies
+        if: steps.version-check.outputs.changed == 'true'
         run: yarn install
 
-      - name: Run tests
-        run: yarn test
-
       - name: Build application
+        if: steps.version-check.outputs.changed == 'true'
         run: yarn build
 
       - name: Extract release notes
+        if: steps.version-check.outputs.changed == 'true'
         run: |
           VERSION=${{ steps.version-check.outputs.version }}
           sed -n "/## \[v${VERSION}\]/,/## \[v/p" CHANGELOG.md | sed '1d;$d' > release_notes.txt || echo "No release notes available v$VERSION" > release_notes.txt
 
       - name: Publish release
+        if: steps.version-check.outputs.changed == 'true'
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
