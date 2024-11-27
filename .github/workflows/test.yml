@@ -1,11 +1,11 @@
-name: run-tests
+name: workflows
 
 on:
   push:
   pull_request:
 
 jobs:
-  frontend:
+  test:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,16 +17,6 @@ jobs:
 
       - name: Run tests
         run: yarn test:frontend
-
-  backend:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Fetch codebase
-        uses: actions/checkout@v4
-
-      - name: Install dependencies
-        run: yarn install
 
       - name: Run tests
         run: yarn test:backend
