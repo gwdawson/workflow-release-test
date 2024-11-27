@@ -21,6 +21,7 @@ jobs:
           diff-search: true
 
   release:
+    name: pre-release / release
     needs: pre-release
     runs-on: ubuntu-latest
     if: needs.pre-release.outputs.version_changed == 'true'
@@ -45,6 +46,7 @@ jobs:
           body_path: release_notes.txt
 
   deploy:
+    name: pre-release / deploy
     needs: [pre-release, release]
     runs-on: ubuntu-latest
     if: needs.pre-release.outputs.version_changed == 'true'
