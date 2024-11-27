@@ -36,7 +36,10 @@ jobs:
       - name: Extract release notes
         run: |
           VERSION=${{ needs.pre-release.outputs.version }}
-          sed -n "/## \[v${VERSION}\]/,/## \[v/p" CHANGELOG.md | sed '1d;$d' > release_notes.txt || echo "No release notes available v$VERSION" > release_notes.txt
+          sed -n "/## \[v${VERSION}\]/,/## \[v/p" CHANGELOG.md | sed '1d;$d' > release_notes.txt
+          if [ ! -s release_notes.txt ]; then
+            echo "No release notes available for $VERSION." > release_notes.txt
+          fi
       - name: Publish release
         uses: actions/create-release@v1
         env:
@@ -50,7 +53,7 @@ jobs:
     name: pre-release / deploy
     needs: [pre-release, release]
     runs-on: ubuntu-latest
-    if: needs.pre-release.outputs.version.changed == 'true'
+    if: needs.pre-release.outputs.version_changed == 'true'
     steps:
       - name: Deploy release
         run: echo "Deploying release to VPS"
