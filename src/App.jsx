@@ -23,7 +23,7 @@ function App() {
           Edit <code>src/App.jsx</code> and save to test HMR
         </p>
       </div>
-      <p className="read-the-docs">my site has been edited. the github workflows auto-deploy.</p>
+      <p className="read-the-docs">change</p>
     </>
   );
 }
