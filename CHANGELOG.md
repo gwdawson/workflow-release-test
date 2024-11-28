@@ -12,6 +12,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 🔒 Security   - for any vulnerabilities.
 -->
 
+## [v41.0.0] - 2024-11-28
+
+### Added
+
+- ✨ nothing, this is 41 tho
+
 ## [v40.0.0] - 2024-11-28
 
 ### Added
