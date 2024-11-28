@@ -33,10 +33,6 @@ jobs:
         run: yarn install
       - name: Build application
         run: yarn build
-      - name: Archive distribution files (tar.gz and zip)
-        run: |
-          tar -czf dist.tar.gz dist/
-          zip -r dist.zip dist/
       - name: Extract release notes
         run: |
           VERSION=${{ needs.pre-release.outputs.version }}
@@ -44,6 +40,16 @@ jobs:
           if [ ! -s release_notes.txt ]; then
             echo "No release notes available for v$VERSION" > release_notes.txt
           fi
+
+      - name: Archive distribution file
+        run: tar -czf dist.tar.gz dist/
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifact
+          path: ./dist.tar.gz
+
       - name: Create release
         id: create_release
         uses: actions/create-release@v1
@@ -53,9 +59,7 @@ jobs:
           tag_name: v${{ needs.pre-release.outputs.version }}
           release_name: v${{ needs.pre-release.outputs.version }}
           body_path: release_notes.txt
-          assets: |
-            dist.tar.gz
-            dist.zip
+
       - name: Upload tar.gz asset
         uses: actions/upload-release-asset@v1
         env:
@@ -65,15 +69,6 @@ jobs:
           asset_path: ./dist.tar.gz
           asset_name: dist.tar.gz
           asset_content_type: application/gzip
-      - name: Upload zip asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist.zip
-          asset_name: dist.zip
-          asset_content_type: application/zip
 
   deployment:
     name: pre-release / release / deployment
@@ -81,39 +76,49 @@ jobs:
     runs-on: ubuntu-latest
     if: needs.pre-release.outputs.version_changed == 'true'
     steps:
-      - name: Download release asset
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          VERSION=${{ needs.pre-release.outputs.version }}
-          curl -L -H "Authorization: token $GITHUB_TOKEN" \
-            "$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
-            https://api.github.com/repos/${{ github.repository }}/releases/tags/v${VERSION} | \
-            jq -r '.assets[] | select(.name == "dist.tar.gz") | .url')" \
-            -o dist.tar.gz
+      # - name: Download release asset
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   run: |
+      #     VERSION=${{ needs.pre-release.outputs.version }}
+      #     curl -L -H "Authorization: token $GITHUB_TOKEN" \
+      #       "$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
+      #       https://api.github.com/repos/${{ github.repository }}/releases/tags/v${VERSION} | \
+      #       jq -r '.assets[] | select(.name == "dist.tar.gz") | .url')" \
+      #       -o dist.tar.gz
 
-      - name: Set up SSH agent
-        uses: webfactory/ssh-agent@v0.9.0
+      - name: Download build artifact
+        uses: actions/download-artifact@v3
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          name: build-artifact
 
-      - name: Copy release code to VPS
-        run: |
-          rsync -avz --delete \
-          -e "ssh -o StrictHostKeyChecking=no" \
-          dist.tar.gz ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/tmp/dist.tar.gz
+      - name: Display structure of downloaded files
+        run: ls -R
 
-          ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << EOF
-            if [ -f /tmp/dist.tar.gz ]; then
-              echo "File transferred successfully. Extracting..."
-              mkdir -p /testing
-              tar -xzf /tmp/dist.tar.gz -C /testing || { echo "Extraction failed. Exiting."; exit 1; }
-              rm /tmp/dist.tar.gz
-            else
-              echo "File not found on server. Exiting."
-              exit 1
-            fi
-          EOF
+      # - name: Set up SSH agent
+      #   uses: webfactory/ssh-agent@v0.9.0
+      #   with:
+      #     ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      # - name: Copy release code to VPS
+      #   run: |
+      #     rsync -avz --delete \
+      #     -e "ssh -o StrictHostKeyChecking=no" \
+      #     dist.tar.gz ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/tmp/dist.tar.gz
+
+      #     ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << EOF
+      #       if [ -f /tmp/dist.tar.gz ]; then
+      #         echo "File transferred successfully. Extracting..."
+      #         mkdir -p /testing
+      #         tar -xzf /tmp/dist.tar.gz -C /testing || { echo "Extraction failed. Exiting."; exit 1; }
+      #         rm /tmp/dist.tar.gz
+      #       else
+      #         echo "File not found on server. Exiting."
+      #         exit 1
+      #       fi
+      #     EOF
+
+      # ---------
 
       # - name: Checkout the release tag
       #   uses: actions/checkout@v4
