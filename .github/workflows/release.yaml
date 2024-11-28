@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  pre-release:
+  pre-release: # TODO: maybe add tests, dot run release if tests fail?
     name: pre-release
     runs-on: ubuntu-latest
     outputs:
@@ -33,6 +33,10 @@ jobs:
         run: yarn install
       - name: Build application
         run: yarn build
+      - name: Archive distribution files (tar.gz and zip)
+        run: |
+          tar -czf dist.tar.gz dist/
+          zip -r dist.zip dist/
       - name: Extract release notes
         run: |
           VERSION=${{ needs.pre-release.outputs.version }}
@@ -48,6 +52,9 @@ jobs:
           tag_name: v${{ needs.pre-release.outputs.version }}
           release_name: v${{ needs.pre-release.outputs.version }}
           body_path: release_notes.txt
+          assets: |
+            dist.tar.gz
+            dist.zip
 
   deployment:
     name: pre-release / release / deployment
