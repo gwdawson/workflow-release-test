@@ -35,10 +35,6 @@ jobs:
         run: yarn build
       - name: Archive dist file
         run: tar -czf dist.tar.gz dist/
-
-      # - name: Check
-      #   run: ls $GITHUB_WORKSPACE
-
       - name: Extract release notes
         run: |
           VERSION=${{ needs.pre-release.outputs.version }}
@@ -83,6 +79,9 @@ jobs:
       #   uses: actions/download-artifact@v4
       #   with:
       #     name: dist.tar.gz
+
+      - name: Check
+        run: ls $GITHUB_WORKSPACE
       - name: Set up SSH agent
         uses: webfactory/ssh-agent@v0.9.0
         with:
