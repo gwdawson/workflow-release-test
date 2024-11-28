@@ -96,6 +96,18 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+      - name: Transfer and extract build on VPS
+        run: |
+          rsync -avz --delete \
+            -e "ssh -o StrictHostKeyChecking=no" \
+            dist.tar.gz ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/tmp/dist.tar.gz
+
+          ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
+            mkdir -p /testing
+            tar -xzf /tmp/dist.tar.gz -C /testing || { echo "Extraction failed. Exiting."; exit 1; }
+            rm /tmp/dist.tar.gz
+          EOF
+
       # - name: Copy release code to VPS
       #   run: |
       #     rsync -avz --delete \
