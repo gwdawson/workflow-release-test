@@ -103,8 +103,8 @@ jobs:
             dist.tar.gz ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/tmp/dist.tar.gz
 
           ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
-            mkdir -p /var/www/application
-            tar --strip-components=1 -xzf /tmp/dist.tar.gz -C /var/www/application
+            mkdir -p /var/www/garethdawson.xyz
+            tar --strip-components=1 -xzf /tmp/dist.tar.gz -C /var/www/garethdawson.xyz
             rm /tmp/dist.tar.gz
           EOF
 
