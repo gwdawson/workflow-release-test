@@ -104,9 +104,15 @@ jobs:
           dist.tar.gz ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/tmp/dist.tar.gz
 
           ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << EOF
-            mkdir -p /testing
-            tar -xzf /tmp/dist.tar.gz -C /testing
-            rm /tmp/dist.tar.gz
+            if [ -f /tmp/dist.tar.gz ]; then
+              echo "File transferred successfully. Extracting..."
+              mkdir -p /testing
+              tar -xzf /tmp/dist.tar.gz -C /testing || { echo "Extraction failed. Exiting."; exit 1; }
+              rm /tmp/dist.tar.gz
+            else
+              echo "File not found on server. Exiting."
+              exit 1
+            fi
           EOF
 
       # - name: Checkout the release tag
