@@ -49,11 +49,29 @@ jobs:
           release_name: v${{ needs.pre-release.outputs.version }}
           body_path: release_notes.txt
 
-  deploy:
-    name: pre-release / release / deploy
+  deployment:
+    name: pre-release / release / deployment
     needs: [pre-release, release]
     runs-on: ubuntu-latest
     if: needs.pre-release.outputs.version_changed == 'true'
     steps:
-      - name: Deploy release
-        run: echo "Deploying release to VPS"
+      - name: Checkout the release tag
+        uses: actions/checkout@v4
+        with:
+          ref: v${{ needs.pre-release.outputs.version }}
+
+      - name: Set up SSH agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Copy release code to VPS
+        run: |
+          rsync -avz --delete \
+          -e "ssh -o StrictHostKeyChecking=no" \
+          ./ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/testing
+
+      # - name: Restart Nginx on VPS
+      #   run: |
+      #     ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} \
+      #     "sudo systemctl restart nginx"

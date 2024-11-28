@@ -9,16 +9,12 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-
     steps:
       - name: fetch codebase
         uses: actions/checkout@v4
-
       - name: install dependencies
         run: yarn install
-
       - name: run frontend tests
         run: yarn test:frontend
-
       - name: run backend tests
         run: yarn test:backend
