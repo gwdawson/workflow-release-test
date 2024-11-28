@@ -44,7 +44,8 @@ jobs:
           if [ ! -s release_notes.txt ]; then
             echo "No release notes available for v$VERSION" > release_notes.txt
           fi
-      - name: Publish release
+      - name: Create release
+        id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -55,6 +56,24 @@ jobs:
           assets: |
             dist.tar.gz
             dist.zip
+      - name: Upload tar.gz asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist.tar.gz
+          asset_name: dist.tar.gz
+          asset_content_type: application/gzip
+      - name: Upload zip asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist.zip
+          asset_name: dist.zip
+          asset_content_type: application/zip
 
   deployment:
     name: pre-release / release / deployment
