@@ -60,11 +60,13 @@ jobs:
           asset_path: ./dist.tar.gz
           asset_name: dist.tar.gz
           asset_content_type: application/gzip
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: dist.tar.gz
-          path: ./dist.tar.gz
+      - name: Add artifacts to workspace
+        run: mv dist.tar.gz $GITHUB_WORKSPACE/
+      # - name: Upload artifacts
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: dist.tar.gz
+      #     path: ./dist.tar.gz
 
   deployment:
     name: pre-release / release / deployment
@@ -72,10 +74,10 @@ jobs:
     runs-on: ubuntu-latest
     if: needs.pre-release.outputs.version_changed == 'true'
     steps:
-      - name: Download build artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: dist.tar.gz
+      # - name: Download build artifact
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     name: dist.tar.gz
       - name: Set up SSH agent
         uses: webfactory/ssh-agent@v0.9.0
         with:
@@ -84,7 +86,7 @@ jobs:
         run: |
           rsync -avz --delete \
             -e "ssh -o StrictHostKeyChecking=no" \
-            dist.tar.gz ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/tmp/dist.tar.gz
+            "$GITHUB_WORKSPACE/dist.tar.gz" ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/tmp/dist.tar.gz
           ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
             mkdir -p /var/www/garethdawson.xyz
             tar --strip-components=1 -xzf /tmp/dist.tar.gz -C /var/www/garethdawson.xyz
